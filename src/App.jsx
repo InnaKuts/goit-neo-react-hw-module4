@@ -3,6 +3,7 @@ import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import { ImagesMockDataSource } from "./services/ImagesDataSource/ImagesMockDataSource";
 import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const imagesDataSource = new ImagesMockDataSource();
@@ -17,6 +18,7 @@ function App() {
 
   return (
     <div className="app">
+      <Toaster position="top-right" />
       <SearchBar onSearch={handleSearch} />
       <main className="main">
         <ImageGallery images={images} />
