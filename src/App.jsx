@@ -3,7 +3,7 @@ import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import { useState } from "react";
-import { useError } from "./components/ErrorToast/ErrorToast";
+import { useError } from "./components/ErrorProvider/ErrorProvider";
 import axios from "axios";
 import { ImagesMockDataSource } from "./services/ImagesDataSource/ImagesMockDataSource";
 

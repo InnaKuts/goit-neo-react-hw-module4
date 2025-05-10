@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
-import { ErrorProvider } from "./components/ErrorToast/ErrorToast";
+import { ErrorProvider } from "./components/ErrorProvider/ErrorProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
