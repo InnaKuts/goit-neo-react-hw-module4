@@ -9,17 +9,16 @@ import { ImagesMockDataSource } from "./services/ImagesDataSource/ImagesMockData
 
 function App() {
   const imagesDataSource = new ImagesMockDataSource();
-  const { showError } = useError();
+  const { showError, persistentError, clearPersistentError } = useError();
 
   const [images, setImages] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchParams, setSearchParams] = useState({ query: "", page: 1 });
-  const [hasHttpError, setHasHttpError] = useState(false);
 
   const handleImagesFetch = async (query = "") => {
     try {
       setIsSearching(true);
-      setHasHttpError(false);
+      clearPersistentError();
 
       if (query) {
         setImages([]);
@@ -36,11 +35,12 @@ function App() {
         setSearchParams((prev) => ({ ...prev, page: nextPage }));
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setHasHttpError(true);
-      } else {
-        showError(error.message ?? "Something went wrong");
-      }
+      showError(
+        error?.message ||
+          error?.response?.data?.errors?.join("\n") ||
+          "Sorry, there was an error loading images. Please try again later.",
+        axios.isAxiosError(error)
+      );
     } finally {
       setIsSearching(false);
     }
@@ -50,8 +50,8 @@ function App() {
     <div className="app">
       <SearchBar onSearch={handleImagesFetch} isLoading={isSearching} />
       <main className="main">
-        {hasHttpError ? (
-          <ErrorMessage />
+        {persistentError ? (
+          <ErrorMessage message={persistentError} />
         ) : (
           <ImageGallery
             images={images}

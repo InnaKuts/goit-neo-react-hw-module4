@@ -1,11 +1,9 @@
 import styles from "./ErrorMessage.module.css";
 
-const ErrorMessage = () => {
+const ErrorMessage = ({ message }) => {
   return (
     <div className={styles.errorContainer}>
-      <p className={styles.errorText}>
-        Sorry, there was an error loading images. Please try again later.
-      </p>
+      <p className={styles.errorText}>{message}</p>
     </div>
   );
 };

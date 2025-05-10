@@ -19,7 +19,11 @@ export class ImagesMockDataSource extends ImagesDataSource {
     this.mockError = error;
   }
 
-  toggleMockError(error = new AxiosError("Mock error")) {
+  toggleMockError(
+    error = new AxiosError(
+      "Sorry, there was an error loading images. Please try again later."
+    )
+  ) {
     this.mockError = this.mockError ? null : error;
   }
 
