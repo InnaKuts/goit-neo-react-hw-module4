@@ -1,12 +1,64 @@
-# React + Vite
+# Image Search App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React application for searching and viewing images.
 
-Currently, two official plugins are available:
+## Data Sources
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The app supports two data sources for images:
 
-## Expanding the ESLint configuration
+### 1. Unsplash API (Production)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+To use the Unsplash API:
+
+1. Create a `.env` file in the root directory
+2. Add your Unsplash API key:
+
+```
+VITE_UNSPLASH_ACCESS_KEY=your_unsplash_access_key
+```
+
+3. Use the Unsplash data source in `App.jsx`:
+
+```jsx
+import { ImagesUnsplashDataSource } from "./services/ImagesDataSource/ImagesUnsplashDataSource";
+
+const imagesDataSource = new ImagesUnsplashDataSource(
+  import.meta.env.VITE_UNSPLASH_ACCESS_KEY
+);
+```
+
+### 2. Mock Data (Development)
+
+To use mock data for development:
+
+1. Import the mock data source in `App.jsx`:
+
+```jsx
+import { ImagesMockDataSource } from "./services/ImagesDataSource/ImagesMockDataSource";
+
+const imagesDataSource = new ImagesMockDataSource();
+```
+
+2. To simulate errors during development, you can use `toggleMockError`:
+
+```jsx
+// In your error handling block
+try {
+  // ... your code
+} catch (error) {
+  // ... error handling
+} finally {
+  imagesDataSource.toggleMockError(); // Toggle error state for next request
+}
+```
+
+This will alternate between successful responses and errors for testing error handling.
+
+## Features
+
+- Image search with pagination
+- Modal view for full-size images
+- Error handling with toast notifications
+- Responsive design
+- Loading states
+- Development error simulation
