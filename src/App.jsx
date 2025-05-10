@@ -3,7 +3,7 @@ import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import { ImagesMockDataSource } from "./services/ImagesDataSource/ImagesMockDataSource";
 import { useState } from "react";
-import { useError } from "./components/ErrorMessage/ErrorMessage";
+import { useError } from "./components/ErrorToast/ErrorToast";
 
 function App() {
   const imagesDataSource = new ImagesMockDataSource();
