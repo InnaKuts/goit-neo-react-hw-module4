@@ -16,6 +16,6 @@ export class ImagesMockDataSource extends ImagesDataSource {
       throw new Error(`Page ${page} not found`);
     }
 
-    return this.mockPages[page - 1];
+    return this.mockPages[page - 1].results;
   }
 }

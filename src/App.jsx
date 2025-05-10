@@ -1,14 +1,25 @@
 import "./App.css";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
-import mockData from "./data/mock_response.json";
+import { ImagesMockDataSource } from "./services/ImagesDataSource/ImagesMockDataSource";
+import { useState } from "react";
 
 function App() {
+  const imagesDataSource = new ImagesMockDataSource();
+
+  const [images, setImages] = useState([]);
+
+  const handleSearch = (query) => {
+    imagesDataSource.getImages(query).then((images) => {
+      setImages(images);
+    });
+  };
+
   return (
     <div className="app">
-      <SearchBar />
+      <SearchBar onSearch={handleSearch} />
       <main className="main">
-        <ImageGallery images={mockData.results} />
+        <ImageGallery images={images} />
       </main>
     </div>
   );

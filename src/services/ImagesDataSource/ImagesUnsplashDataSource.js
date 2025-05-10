@@ -22,6 +22,6 @@ export class ImagesUnsplashDataSource extends ImagesDataSource {
     }
 
     const data = await response.json();
-    return data;
+    return data.results;
   }
 }
