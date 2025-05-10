@@ -1,4 +1,5 @@
 import ImageCard from "../ImageCard/ImageCard";
+import Loader from "../Loader/Loader";
 import styles from "./ImageGallery.module.css";
 
 const ImageGallery = ({ images }) => {
@@ -11,6 +12,7 @@ const ImageGallery = ({ images }) => {
           </li>
         ))}
       </ul>
+      <Loader />
     </>
   );
 };
