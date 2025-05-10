@@ -2,6 +2,7 @@ import "./App.css";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
+import ImageModal from "./components/ImageModal/ImageModal";
 import { useState } from "react";
 import { useError } from "./components/ErrorProvider/ErrorProvider";
 import axios from "axios";
@@ -14,6 +15,7 @@ function App() {
   const [images, setImages] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchParams, setSearchParams] = useState({ query: "", page: 1 });
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const handleImagesFetch = async (query = "") => {
     try {
@@ -46,6 +48,14 @@ function App() {
     }
   };
 
+  const handleImageClick = (image) => {
+    setSelectedImage(image);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedImage(null);
+  };
+
   return (
     <div className="app">
       <SearchBar onSearch={handleImagesFetch} isLoading={isSearching} />
@@ -57,8 +67,14 @@ function App() {
             images={images}
             isLoading={isSearching}
             onLoadMore={() => handleImagesFetch()}
+            onImageClick={handleImageClick}
           />
         )}
+        <ImageModal
+          isOpen={!!selectedImage}
+          onClose={handleCloseModal}
+          image={selectedImage}
+        />
       </main>
     </div>
   );

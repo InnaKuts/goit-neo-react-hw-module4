@@ -2,13 +2,13 @@ import ImageCard from "../ImageCard/ImageCard";
 import Loader from "../Loader/Loader";
 import styles from "./ImageGallery.module.css";
 
-const ImageGallery = ({ images, isLoading, onLoadMore }) => {
+const ImageGallery = ({ images, isLoading, onLoadMore, onImageClick }) => {
   return (
     <>
       <ul className={styles.gallery}>
         {images.map((image) => (
           <li key={image.id} className={styles.item}>
-            <ImageCard image={image} />
+            <ImageCard image={image} onClick={() => onImageClick(image)} />
           </li>
         ))}
       </ul>
