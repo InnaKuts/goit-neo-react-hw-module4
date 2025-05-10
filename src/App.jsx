@@ -11,13 +11,26 @@ function App() {
 
   const [images, setImages] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [searchParams, setSearchParams] = useState({ query: "", page: 1 });
 
-  const handleSearch = async (query) => {
+  const handleImagesFetch = async (query = "") => {
     try {
       setIsSearching(true);
-      setImages([]);
-      const images = await imagesDataSource.getImages(query);
-      setImages(images);
+
+      if (query) {
+        setImages([]);
+        setSearchParams({ query, page: 1 });
+        const newImages = await imagesDataSource.getImages(query, 1);
+        setImages(newImages);
+      } else {
+        const nextPage = searchParams.page + 1;
+        const newImages = await imagesDataSource.getImages(
+          searchParams.query,
+          nextPage
+        );
+        setImages((prevImages) => [...prevImages, ...newImages]);
+        setSearchParams((prev) => ({ ...prev, page: nextPage }));
+      }
     } catch (error) {
       showError(error.message ?? "Something went wrong");
     } finally {
@@ -27,9 +40,13 @@ function App() {
 
   return (
     <div className="app">
-      <SearchBar onSearch={handleSearch} isLoading={isSearching} />
+      <SearchBar onSearch={handleImagesFetch} isLoading={isSearching} />
       <main className="main">
-        <ImageGallery images={images} isLoading={isSearching} />
+        <ImageGallery
+          images={images}
+          isLoading={isSearching}
+          onLoadMore={() => handleImagesFetch()}
+        />
       </main>
     </div>
   );
