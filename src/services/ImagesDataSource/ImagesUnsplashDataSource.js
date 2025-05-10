@@ -22,12 +22,6 @@ export class ImagesUnsplashDataSource {
       },
     });
 
-    return response.data.results.map((image) => ({
-      id: image.id,
-      url: image.urls.regular,
-      alt: image.alt_description || "Unsplash image",
-      likes: image.likes,
-      author: image.user.name,
-    }));
+    return response.data.results;
   }
 }

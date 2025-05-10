@@ -6,9 +6,11 @@ import ImageModal from "./components/ImageModal/ImageModal";
 import { useState } from "react";
 import { useError } from "./components/ErrorProvider/useError";
 import axios from "axios";
-import { ImagesMockDataSource } from "./services/ImagesDataSource/ImagesMockDataSource";
+import { ImagesUnsplashDataSource } from "./services/ImagesDataSource/ImagesUnsplashDataSource";
 
-const imagesDataSource = new ImagesMockDataSource();
+const imagesDataSource = new ImagesUnsplashDataSource(
+  import.meta.env.VITE_UNSPLASH_ACCESS_KEY
+);
 
 function App() {
   const { showError, persistentError, clearPersistentError } = useError();
