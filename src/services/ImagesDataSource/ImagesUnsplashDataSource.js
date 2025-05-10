@@ -1,27 +1,33 @@
-import { ImagesDataSource } from "./ImagesDataSource";
+import axios from "axios";
 
-export class ImagesUnsplashDataSource extends ImagesDataSource {
-  constructor(apiKey) {
-    super();
-    this.apiKey = apiKey;
-    this.baseUrl = "https://api.unsplash.com";
+const BASE_URL = "https://api.unsplash.com";
+
+export class ImagesUnsplashDataSource {
+  constructor(accessKey, baseUrl = BASE_URL) {
+    this.accessKey = accessKey;
+    this.api = axios.create({
+      baseURL: baseUrl,
+      headers: {
+        Authorization: `Client-ID ${this.accessKey}`,
+      },
+    });
   }
 
   async getImages(query, page = 1) {
-    const response = await fetch(
-      `${this.baseUrl}/search/photos?query=${query}&page=${page}`,
-      {
-        headers: {
-          Authorization: `Client-ID ${this.apiKey}`,
-        },
-      }
-    );
+    const response = await this.api.get("/search/photos", {
+      params: {
+        query,
+        page,
+        per_page: 12,
+      },
+    });
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch images from Unsplash");
-    }
-
-    const data = await response.json();
-    return data.results;
+    return response.data.results.map((image) => ({
+      id: image.id,
+      url: image.urls.regular,
+      alt: image.alt_description || "Unsplash image",
+      likes: image.likes,
+      author: image.user.name,
+    }));
   }
 }

@@ -1,0 +1,14 @@
+.errorContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  padding: 20px;
+  text-align: center;
+}
+
+.errorText {
+  color: #e53e3e;
+  font-size: 18px;
+  line-height: 1.5;
+}
