@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import styles from "./SearchBar.module.css";
-import { useError } from "../ErrorProvider/ErrorProvider";
+import { useError } from "../ErrorProvider/useError";
 
 const SearchBar = ({ onSearch, isLoading }) => {
   const { showError } = useError();

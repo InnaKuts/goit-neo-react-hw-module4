@@ -1,7 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
-
-const ErrorContext = createContext(null);
+import { ErrorContext } from "./ErrorContext";
 
 export const ErrorProvider = ({ children }) => {
   const [persistentError, setPersistentError] = useState(null);
@@ -26,12 +25,4 @@ export const ErrorProvider = ({ children }) => {
       {children}
     </ErrorContext.Provider>
   );
-};
-
-export const useError = () => {
-  const context = useContext(ErrorContext);
-  if (!context) {
-    throw new Error("useError must be used within an ErrorProvider");
-  }
-  return context;
 };
