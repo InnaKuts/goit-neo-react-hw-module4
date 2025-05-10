@@ -28,12 +28,15 @@ const SearchBar = ({ onSearch, isLoading }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    formik.handleSubmit(e);
-    if (Object.keys(formik.errors).length > 0) {
-      Object.values(formik.errors).forEach((error) => {
-        showError(error);
-      });
-    }
+    formik.validateForm().then((errors) => {
+      if (Object.keys(errors).length > 0) {
+        Object.values(errors).forEach((error) => {
+          showError(error);
+        });
+      } else {
+        formik.handleSubmit(e);
+      }
+    });
   };
 
   return (
