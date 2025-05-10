@@ -1,9 +1,11 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import toast from "react-hot-toast";
 import styles from "./SearchBar.module.css";
+import { useError } from "../ErrorMessage/ErrorMessage";
 
 const SearchBar = ({ onSearch, isLoading }) => {
+  const { showError } = useError();
+
   const formik = useFormik({
     initialValues: {
       query: "",
@@ -17,23 +19,26 @@ const SearchBar = ({ onSearch, isLoading }) => {
     onSubmit: async (values, { resetForm }) => {
       try {
         await onSearch(values.query);
-        resetForm();
+        resetForm({ values: { query: "" } });
       } catch (error) {
-        toast.error(error.message ?? "Something went wrong");
+        showError(error.message ?? "Something went wrong");
       }
     },
   });
 
-  const handleBlur = (e) => {
-    formik.handleBlur(e);
-    if (formik.touched.query && formik.errors.query) {
-      toast.error(formik.errors.query);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    formik.handleSubmit(e);
+    if (Object.keys(formik.errors).length > 0) {
+      Object.values(formik.errors).forEach((error) => {
+        showError(error);
+      });
     }
   };
 
   return (
     <header className={styles.header}>
-      <form className={styles.form} onSubmit={formik.handleSubmit}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <input
           className={styles.input}
           type="text"
@@ -43,7 +48,6 @@ const SearchBar = ({ onSearch, isLoading }) => {
           placeholder="Search images and photos"
           value={formik.values.query}
           onChange={formik.handleChange}
-          onBlur={handleBlur}
           disabled={isLoading}
         />
         <button className={styles.button} type="submit" disabled={isLoading}>
