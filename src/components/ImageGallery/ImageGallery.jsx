@@ -13,6 +13,7 @@ const ImageGallery = ({ images }) => {
         ))}
       </ul>
       <Loader />
+      <button className={styles.button}>Load more</button>
     </>
   );
 };

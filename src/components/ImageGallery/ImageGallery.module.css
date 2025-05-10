@@ -34,3 +34,20 @@
 .item:hover {
   transform: scale(1.02);
 }
+
+.button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #2c5282;
+}
