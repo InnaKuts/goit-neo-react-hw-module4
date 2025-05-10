@@ -1,13 +1,15 @@
-import { useState } from "react";
 import "./App.css";
 import SearchBar from "./components/SearchBar/SearchBar";
+import ImageGallery from "./components/ImageGallery/ImageGallery";
+import testData from "./data/test_response.json";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <div className="app">
       <SearchBar />
+      <main className="main">
+        <ImageGallery images={testData} />
+      </main>
     </div>
   );
 }
