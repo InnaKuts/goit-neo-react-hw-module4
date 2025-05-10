@@ -2,7 +2,7 @@ import ImageCard from "../ImageCard/ImageCard";
 import Loader from "../Loader/Loader";
 import styles from "./ImageGallery.module.css";
 
-const ImageGallery = ({ images }) => {
+const ImageGallery = ({ images, isLoading }) => {
   return (
     <>
       <ul className={styles.gallery}>
@@ -12,8 +12,12 @@ const ImageGallery = ({ images }) => {
           </li>
         ))}
       </ul>
-      <Loader />
-      <button className={styles.button}>Load more</button>
+      {isLoading && <Loader />}
+      {images.length > 0 && (
+        <button className={styles.button} disabled={isLoading}>
+          Load more
+        </button>
+      )}
     </>
   );
 };

@@ -28,6 +28,11 @@
   border-color: #2c5282;
 }
 
+.input:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
 .button {
   padding: 10px 20px;
   background-color: #2c5282;
@@ -39,6 +44,11 @@
   transition: background-color 0.3s ease;
 }
 
-.button:hover {
+.button:hover:not(:disabled) {
   background-color: #1a365d;
+}
+
+.button:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
 }

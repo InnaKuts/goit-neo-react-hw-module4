@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import toast from "react-hot-toast";
 import styles from "./SearchBar.module.css";
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ onSearch, isLoading }) => {
   const formik = useFormik({
     initialValues: {
       query: "",
@@ -14,17 +14,22 @@ const SearchBar = ({ onSearch }) => {
         .min(3, "Search query must be at least 3 characters")
         .max(50, "Search query must not exceed 50 characters"),
     }),
-    onSubmit: (values, { resetForm }) => {
-      onSearch(values.query);
-      resetForm();
-    },
-    onError: (errors) => {
-      console.log(errors);
-      Object.values(errors).forEach((error) => {
-        toast.error(error);
-      });
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        await onSearch(values.query);
+        resetForm();
+      } catch (error) {
+        toast.error(error.message ?? "Something went wrong");
+      }
     },
   });
+
+  const handleBlur = (e) => {
+    formik.handleBlur(e);
+    if (formik.touched.query && formik.errors.query) {
+      toast.error(formik.errors.query);
+    }
+  };
 
   return (
     <header className={styles.header}>
@@ -38,15 +43,11 @@ const SearchBar = ({ onSearch }) => {
           placeholder="Search images and photos"
           value={formik.values.query}
           onChange={formik.handleChange}
-          onBlur={(e) => {
-            formik.handleBlur(e);
-            if (formik.errors.query) {
-              toast.error(formik.errors.query);
-            }
-          }}
+          onBlur={handleBlur}
+          disabled={isLoading}
         />
-        <button className={styles.button} type="submit">
-          Search
+        <button className={styles.button} type="submit" disabled={isLoading}>
+          {isLoading ? "Searching..." : "Search"}
         </button>
       </form>
     </header>
