@@ -2,27 +2,31 @@ import "./App.css";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
+import Loader from "./components/Loader/Loader";
+import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./components/ImageModal/ImageModal";
 import { useState } from "react";
 import { useError } from "./components/ErrorProvider/useError";
 import axios from "axios";
 import { ImagesUnsplashDataSource } from "./services/ImagesDataSource/ImagesUnsplashDataSource";
+import { ImagesMockDataSource } from "./services/ImagesDataSource/ImagesMockDataSource";
 
-const imagesDataSource = new ImagesUnsplashDataSource(
-  import.meta.env.VITE_UNSPLASH_ACCESS_KEY
-);
+const mock = false;
+const imagesDataSource = mock
+  ? new ImagesMockDataSource()
+  : new ImagesUnsplashDataSource("newqD9k6gRLQFtr0rwWBhUivYetX-gCmsa7bC41BnXQ");
 
 function App() {
   const { showError, persistentError, clearPersistentError } = useError();
 
   const [images, setImages] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [searchParams, setSearchParams] = useState({ query: "", page: 1 });
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleImagesFetch = async (query = "") => {
     try {
-      setIsSearching(true);
+      setIsLoading(true);
       clearPersistentError();
 
       if (query) {
@@ -47,7 +51,7 @@ function App() {
         axios.isAxiosError(error)
       );
     } finally {
-      setIsSearching(false);
+      setIsLoading(false);
     }
   };
 
@@ -61,17 +65,21 @@ function App() {
 
   return (
     <div className="app">
-      <SearchBar onSearch={handleImagesFetch} isLoading={isSearching} />
+      <SearchBar disabled={isLoading} onSearch={handleImagesFetch} />
       <main className="main">
         {persistentError ? (
           <ErrorMessage message={persistentError} />
         ) : (
-          <ImageGallery
-            images={images}
-            isLoading={isSearching}
-            onLoadMore={() => handleImagesFetch()}
-            onImageClick={handleImageClick}
-          />
+          <>
+            <ImageGallery images={images} onImageClick={handleImageClick} />
+            {isLoading && <Loader />}
+            {images.length > 0 && (
+              <LoadMoreBtn
+                disabled={isLoading}
+                onClick={() => handleImagesFetch()}
+              />
+            )}
+          </>
         )}
         <ImageModal
           isOpen={!!selectedImage}

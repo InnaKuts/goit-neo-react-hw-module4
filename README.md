@@ -8,51 +8,13 @@ The app supports two data sources for images:
 
 ### 1. Unsplash API (Production)
 
-To use the Unsplash API:
-
-1. Create a `.env` file in the root directory
-2. Add your Unsplash API key:
-
-```
-VITE_UNSPLASH_ACCESS_KEY=your_unsplash_access_key
-```
-
-3. Use the Unsplash data source in `App.jsx`:
-
-```jsx
-import { ImagesUnsplashDataSource } from "./services/ImagesDataSource/ImagesUnsplashDataSource";
-
-const imagesDataSource = new ImagesUnsplashDataSource(
-  import.meta.env.VITE_UNSPLASH_ACCESS_KEY
-);
-```
+To use the Unsplash API, set `mock = false` in `App.jsx`:
 
 ### 2. Mock Data (Development)
 
-To use mock data for development:
+To use mock data for development, set `mock = true` in `App.jsx`:
 
-1. Import the mock data source in `App.jsx`:
-
-```jsx
-import { ImagesMockDataSource } from "./services/ImagesDataSource/ImagesMockDataSource";
-
-const imagesDataSource = new ImagesMockDataSource();
-```
-
-2. To simulate errors during development, you can use `toggleMockError`:
-
-```jsx
-// In your error handling block
-try {
-  // ... your code
-} catch (error) {
-  // ... error handling
-} finally {
-  imagesDataSource.toggleMockError(); // Toggle error state for next request
-}
-```
-
-This will alternate between successful responses and errors for testing error handling.
+The mock data source includes simulated API responses with configurable delay and errors for testing.
 
 ## Features
 

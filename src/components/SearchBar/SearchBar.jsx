@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import styles from "./SearchBar.module.css";
 import { useError } from "../ErrorProvider/useError";
 
-const SearchBar = ({ onSearch, isLoading }) => {
+const SearchBar = ({ onSearch, disabled }) => {
   const { showError } = useError();
 
   const formik = useFormik({
@@ -51,10 +51,10 @@ const SearchBar = ({ onSearch, isLoading }) => {
           placeholder="Search images and photos"
           value={formik.values.query}
           onChange={formik.handleChange}
-          disabled={isLoading}
+          disabled={disabled}
         />
-        <button className={styles.button} type="submit" disabled={isLoading}>
-          {isLoading ? "Searching..." : "Search"}
+        <button className={styles.button} type="submit" disabled={disabled}>
+          Search
         </button>
       </form>
     </header>
