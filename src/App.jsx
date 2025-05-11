@@ -65,18 +65,20 @@ function App() {
 
   return (
     <div className="app">
-      <SearchBar disabled={isLoading} onSearch={handleImagesFetch} />
+      <SearchBar onSearch={handleImagesFetch} isLoading={isLoading} />
       <main className="main">
         {persistentError ? (
           <ErrorMessage message={persistentError} />
         ) : (
           <>
-            <ImageGallery images={images} onImageClick={handleImageClick} />
+            {images.length > 0 && (
+              <ImageGallery images={images} onImageClick={handleImageClick} />
+            )}
             {isLoading && <Loader />}
             {images.length > 0 && (
               <LoadMoreBtn
-                disabled={isLoading}
                 onClick={() => handleImagesFetch()}
+                disabled={isLoading}
               />
             )}
           </>
